@@ -10,6 +10,23 @@
     },
     "rules": {
       "no-console": "off",
-      "no-debugger": "off"
+      "no-debugger": "off",
+      "quotes": [2, "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
+      "prettier/prettier": [
+        "warn",
+        {
+          "singleQuote": true,
+          "semi": true,
+          "vueIndentScriptAndStyle": true
+        }
+      ],
+      // "vue/max-attributes-per-line": ["error", {
+      //   "singleline": {
+      //     "max": 1
+      //   },      
+      //   "multiline": {
+      //     "max": 1
+      //   }
+      // }]
     }
   }
