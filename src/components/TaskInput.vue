@@ -14,30 +14,21 @@
 </template>
 
 <script>
-import { ref } from 'vue';
-
 export default {
-  emits: {
-    onAddTask({ title }) {
-      if (title === '') {
-        alert('Fill some info please!');
-        return false;
-      }
-      return true;
-    },
-  },
-  setup(props, { emit }) {
-    const title = ref('');
-
-    const onAddTask = () => {
-      emit('onAddTask', { title: title.value });
-      title.value = '';
-    };
-
+  data() {
     return {
-      title,
-      onAddTask,
+      title: '',
     };
+  },
+  methods: {
+    onAddTask() {
+      if (this.title === '') {
+        alert('Fill some info please!');
+        return;
+      }
+      this.$emit('onAddTask', { title: this.title });
+      this.title = '';
+    },
   },
 };
 </script>

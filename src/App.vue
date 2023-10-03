@@ -12,6 +12,7 @@
         <TaskCard
           @onRemove="removeTask(item.id)"
           @onDone="setDoneTask(item.id)"
+          @onEdit="editTask"
           :model="item"
         />
       </li>
@@ -22,69 +23,69 @@
 <script>
   import TaskInput from './components/TaskInput.vue';
   import TaskCard from './components/TaskCard.vue';
-  import { onMounted, ref } from 'vue';
-
+  
   export default {
-    name: 'App',
-    components: {
-      TaskCard,
-      TaskInput,
+  name: 'App',
+  components: {
+    TaskCard,
+    TaskInput,
+  },
+  data() {
+    return {
+      taskList: [],
+      isLoading: false,
+    };
+  },
+  methods: {
+    async fetchTasks() {
+      const tasks = await fetch('https://jsonplaceholder.typicode.com/todos').then((res) => res.json());
+
+      this.taskList = tasks.map((item) => ({
+        id: item.id,
+        completed: item.completed,
+        title: item.title,
+      })).splice(0,10);
+      return this.taskList
     },
-    setup() {
-      const taskList = ref([]);
-
-      const isLoading = ref(false);
-
-      const addTask = ({ title }) => {
-        taskList.value = [
-          ...taskList.value,
-          {
-            id: taskList.value[taskList.value.length - 1].id + 1,
-            title,
-            completed: false,
-          },
-        ];
-      };
-
-      const setDoneTask = (id) => {
-        taskList.value = taskList.value.map((item) => {
-          if (item.id === id) item.completed = true;
-          return item;
-        });
-      };
-
-      const removeTask = (id) => {
-        taskList.value = taskList.value.filter((item) => item.id !== id);
-      };
-
-      const fetchTasks = async () => {
-        const response = await fetch(
-          'https://jsonplaceholder.typicode.com/todos',
-        );
-        const test = await response.json();
-        return test.map((item) => ({
-          id: item.id,
-          completed: item.completed,
-          title: item.title,
-        }));
-      };
-
-      onMounted(async () => {
-        isLoading.value = true;
-        taskList.value = await fetchTasks();
-        isLoading.value = false;
+    addTask({ title }) {
+      const nextId = this.taskList[this.taskList.length - 1].id + 1
+      this.taskList.push({
+        id: this.taskList.length > 0 ? nextId : 1,
+        title,
+        completed: false,
       });
-
-      return {
-        isLoading,
-        taskList,
-        addTask,
-        removeTask,
-        setDoneTask,
-        fetchTasks,
-      };
     },
-  };
+    setDoneTask(id) {
+      this.taskList = this.taskList.map((item) => {
+        if (item.id === id) item.completed = true;
+        return item;
+      });
+    },
+    removeTask(id) {
+      this.taskList = this.taskList.filter((item) => item.id !== id);
+    },
+    editTask({title, id}) {
+      //const currentTask = this.taskList.find(task => task.id === id)
+      const currentIndex = this.taskList.findIndex(task => task.id === id)
+
+     
+     const newTask = { 
+        completed: false,
+        id: 2,
+        title: 'test'
+     }
+     this.taskList[currentIndex] = newTask
+    //  this.$set(this.taskList, currentIndex, newTask)
+      console.log(title, id)
+
+    }
+  },
+  async mounted() {
+    this.isLoading = true;
+    await this.fetchTasks();
+    this.isLoading = false;
+  },
+};
 </script>
 
 <style scoped>

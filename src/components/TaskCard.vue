@@ -1,7 +1,7 @@
 <template>
   <div :class="model.comleted ? 'todo-row complete' : 'todo-row'">
     <div>
-      <h4>{{ model.title }}</h4>
+      <input v-model="task.title" type="text" @input="$emit('onEdit', task)" />
     </div>
     <div>
       <div
@@ -21,33 +21,36 @@
 </template>
 
 <script>
-  export default {
-    emits: ['onDone', 'onRemove'],
-    props: {
-      model: {
-        required: true,
-        default: {
-          id: 0,
-          title: 'Create video',
-          completed: false,
-        },
+export default {
+  props: {
+    model: {
+      required: true,
+      default: {
+        id: 0,
+        title: 'Create video',
+        completed: false,
       },
     },
-    setup(props, { emit }) {
-      const emitOnDone = () => {
-        emit('onDone');
-      };
-
-      const emitOnRemove = () => {
-        emit('onRemove');
-      };
-
-      return {
-        emitOnDone,
-        emitOnRemove,
-      };
+  },
+  computed: {
+    task: {
+      get() {
+        return this.model
+      },
+      set(newVal) {
+        return newVal
+      }
+    }
+  },
+  methods: {
+    emitOnDone() {
+      this.$emit('onDone');
     },
-  };
+    emitOnRemove() {
+      this.$emit('onRemove');
+    },
+  },
+};
 </script>
 
 <style scoped>
