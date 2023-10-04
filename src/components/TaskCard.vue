@@ -1,5 +1,5 @@
 <template>
-  <div :class="model.comleted ? 'todo-row complete' : 'todo-row'">
+  <div :class="model.comleted ? 'todo-item complete' : 'todo-item'">
     <input v-model="task.title" type="text" @input="$emit('onEdit')" />
     <div>
       <div v-if="!model.completed" @click="emitOnDone">
@@ -13,50 +13,51 @@
 </template>
 
 <script>
-export default {
-  props: {
-    model: {
-      required: true,
-      default: {
-        id: 0,
-        title: 'Create video',
-        completed: false,
+  export default {
+    props: {
+      model: {
+        required: true,
+        default: {
+          id: 0,
+          title: 'Create video',
+          completed: false,
+        },
       },
     },
-  },
-  computed: {
-    task: {
-      get() {
-        return this.model;
+    computed: {
+      task: {
+        get() {
+          return this.model;
+        },
+        set(newVal) {
+          return newVal;
+        },
       },
-      set(newVal) {
-        return newVal;
+    },
+    methods: {
+      emitOnDone() {
+        this.$emit('onDone');
+      },
+      emitOnRemove() {
+        this.$emit('onRemove');
       },
     },
-  },
-  methods: {
-    emitOnDone() {
-      this.$emit('onDone');
-    },
-    emitOnRemove() {
-      this.$emit('onRemove');
-    },
-  },
-};
+  };
 </script>
 
 <style scoped>
-input {
-  background: transparent;
-  border: none;
-  outline: none;
-  width: 100%;
-  font-size: 16px;
-  font-weight: 600;
-}
-.task-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+  input {
+    background: transparent;
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+  }
+  .task-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 </style>
