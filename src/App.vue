@@ -12,7 +12,7 @@
         <TaskCard
           @onRemove="removeTask(item.id)"
           @onDone="setDoneTask(item.id)"
-          @onEdit="editTask"
+          @onEdit="editTask(item.id)"
           :model="item"
         />
       </li>
@@ -64,20 +64,16 @@
     removeTask(id) {
       this.taskList = this.taskList.filter((item) => item.id !== id);
     },
-    editTask({title, id}) {
-      //const currentTask = this.taskList.find(task => task.id === id)
+    editTask(id) {
       const currentIndex = this.taskList.findIndex(task => task.id === id)
 
-     
      const newTask = { 
         completed: false,
-        id: 2,
-        title: 'test'
+        id,
+        title: 'new text'
      }
-     this.taskList[currentIndex] = newTask
-    //  this.$set(this.taskList, currentIndex, newTask)
-      console.log(title, id)
-
+    //  this.taskList[currentIndex] = newTask
+     this.$set(this.taskList, currentIndex, newTask)
     }
   },
   async mounted() {

@@ -1,19 +1,11 @@
 <template>
   <div :class="model.comleted ? 'todo-row complete' : 'todo-row'">
+    <input v-model="task.title" type="text" @input="$emit('onEdit')" />
     <div>
-      <input v-model="task.title" type="text" @input="$emit('onEdit', task)" />
-    </div>
-    <div>
-      <div
-        v-if="!model.completed"
-        @click="emitOnDone"
-      >
+      <div v-if="!model.completed" @click="emitOnDone">
         <unicon name="check-circle"> </unicon>
       </div>
-      <div
-        v-else
-        @click="emitOnRemove"
-      >
+      <div v-else @click="emitOnRemove">
         <unicon name="times-circle"></unicon>
       </div>
     </div>
@@ -35,12 +27,12 @@ export default {
   computed: {
     task: {
       get() {
-        return this.model
+        return this.model;
       },
       set(newVal) {
-        return newVal
-      }
-    }
+        return newVal;
+      },
+    },
   },
   methods: {
     emitOnDone() {
@@ -54,9 +46,17 @@ export default {
 </script>
 
 <style scoped>
-  .task-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+input {
+  background: transparent;
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 16px;
+  font-weight: 600;
+}
+.task-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 </style>
