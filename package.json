@@ -19,6 +19,7 @@
     "babel-eslint": "^10.1.0",
     "eslint-plugin-vue": "^9.17.0",
     "vue": "^2.7.14",
+    "vue-material-design-icons": "^5.2.0",
     "vue-unicons": "^3.3.1"
   }
 }

@@ -1,27 +1,25 @@
 <template>
-  <div :class="model.comleted ? 'todo-row complete' : 'todo-row'">
+  <div :class="model.comleted ? 'todo-item complete' : 'todo-item'">
     <div>
       <h4>{{ model.title }}</h4>
     </div>
     <div>
-      <div
-        v-if="!model.completed"
-        @click="emitOnDone"
-      >
-        <unicon name="check-circle"> </unicon>
+      <div v-if="!model.completed" @click="emitOnDone">
+        <check-circle-outline />
       </div>
-      <div
-        v-else
-        @click="emitOnRemove"
-      >
-        <unicon name="times-circle"></unicon>
+      <div v-else @click="emitOnRemove">
+        <close-circle-outline />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import CloseCircleOutline from 'vue-material-design-icons/CloseCircleOutline.vue';
+  import CheckCircleOutline from 'vue-material-design-icons/CheckCircleOutline.vue';
+
   export default {
+    components: { CloseCircleOutline, CheckCircleOutline },
     emits: ['onDone', 'onRemove'],
     props: {
       model: {

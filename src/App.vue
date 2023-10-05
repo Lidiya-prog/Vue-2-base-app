@@ -1,14 +1,9 @@
 <template>
   <main class="todo-app">
     <TaskInput @onAddTask="addTask"></TaskInput>
-    <span
-      class="loader"
-      v-if="isLoading"
-    ></span>
+    <span class="loader" v-if="isLoading"></span>
     <ul class="task-list my-list">
-      <li
-        v-for="item in taskList"
-        :key="item.id">
+      <li v-for="item in taskList" :key="item.id" class="todo-row">
         <TaskCard
           @onRemove="removeTask(item.id)"
           @onDone="setDoneTask(item.id)"
