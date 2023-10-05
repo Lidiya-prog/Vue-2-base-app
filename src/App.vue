@@ -1,7 +1,7 @@
 <template>
   <main class="todo-app">
     <TaskInput @onAddTask="addTask" />
-    <span class="loader" v-if="isLoading" />
+    <span class="loader" v-if="isLoading"></span>
     <ul class="task-list my-list">
       <li v-for="item in taskList" :key="item.id" class="todo-row">
         <TaskCard
@@ -37,7 +37,7 @@
           'https://jsonplaceholder.typicode.com/todos',
         ).then((res) => res.json());
 
-        this.taskList = tasks.splice(0, 10).map((item) => ({
+        this.taskList = tasks.map((item) => ({
           id: item.id,
           completed: item.completed,
           title: item.title,

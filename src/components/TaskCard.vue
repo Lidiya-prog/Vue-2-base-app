@@ -3,17 +3,22 @@
     <input v-model="title" type="text" />
     <div>
       <div v-if="!task.completed" @click="$emit('onDone')">
-        <unicon name="check-circle" />
+        <check-circle-outline />
       </div>
       <div v-else @click="$emit('onRemove')">
-        <unicon name="times-circle" />
+        <close-circle-outline />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import CloseCircleOutline from 'vue-material-design-icons/CloseCircleOutline.vue';
+  import CheckCircleOutline from 'vue-material-design-icons/CheckCircleOutline.vue';
+
   export default {
+    components: { CloseCircleOutline, CheckCircleOutline },
+    emits: ['onDone', 'onRemove'],
     props: {
       task: {
         required: true,
@@ -34,7 +39,7 @@
         },
       },
     },
-};
+  };
 </script>
 
 <style scoped>
