@@ -1,12 +1,12 @@
 <template>
-  <div :class="model.comleted ? 'todo-item complete' : 'todo-item'">
-    <input v-model="task.title" type="text" @input="$emit('onEdit')" />
+  <div :class="task.comleted ? 'todo-item complete' : 'todo-item'">
+    <input v-model="title" type="text" />
     <div>
-      <div v-if="!model.completed" @click="emitOnDone">
-        <unicon name="check-circle"> </unicon>
+      <div v-if="!task.completed" @click="$emit('onDone')">
+        <unicon name="check-circle" />
       </div>
-      <div v-else @click="emitOnRemove">
-        <unicon name="times-circle"></unicon>
+      <div v-else @click="$emit('onRemove')">
+        <unicon name="times-circle" />
       </div>
     </div>
   </div>
@@ -15,7 +15,7 @@
 <script>
   export default {
     props: {
-      model: {
+      task: {
         required: true,
         default: {
           id: 0,
@@ -25,24 +25,16 @@
       },
     },
     computed: {
-      task: {
+      title: {
         get() {
-          return this.model;
+          return this.task.title;
         },
         set(newVal) {
-          return newVal;
+          this.$emit('onEdit', newVal);
         },
       },
     },
-    methods: {
-      emitOnDone() {
-        this.$emit('onDone');
-      },
-      emitOnRemove() {
-        this.$emit('onRemove');
-      },
-    },
-  };
+};
 </script>
 
 <style scoped>

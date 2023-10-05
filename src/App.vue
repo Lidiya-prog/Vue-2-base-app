@@ -1,14 +1,14 @@
 <template>
   <main class="todo-app">
-    <TaskInput @onAddTask="addTask"></TaskInput>
-    <span class="loader" v-if="isLoading"></span>
+    <TaskInput @onAddTask="addTask" />
+    <span class="loader" v-if="isLoading" />
     <ul class="task-list my-list">
       <li v-for="item in taskList" :key="item.id" class="todo-row">
         <TaskCard
           @onRemove="removeTask(item.id)"
           @onDone="setDoneTask(item.id)"
           @onEdit="editTask(item.id)"
-          :model="item"
+          :task="item"
         />
       </li>
     </ul>
@@ -37,13 +37,11 @@
           'https://jsonplaceholder.typicode.com/todos',
         ).then((res) => res.json());
 
-        this.taskList = tasks
-          .map((item) => ({
-            id: item.id,
-            completed: item.completed,
-            title: item.title,
-          }))
-          .splice(0, 10);
+        this.taskList = tasks.splice(0, 10).map((item) => ({
+          id: item.id,
+          completed: item.completed,
+          title: item.title,
+        }));
         return this.taskList;
       },
       addTask({ title }) {
@@ -71,8 +69,8 @@
           id,
           title: 'new text',
         };
-        //  this.taskList[currentIndex] = newTask
-        this.$set(this.taskList, currentIndex, newTask);
+        this.taskList[currentIndex] = newTask;
+        // this.$set(this.taskList, currentIndex, newTask);
       },
     },
     async mounted() {

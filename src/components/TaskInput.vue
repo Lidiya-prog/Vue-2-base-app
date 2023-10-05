@@ -9,7 +9,9 @@
     <button
       @click="onAddTask"
       class="todo-button"
-    >Add task</button>
+    >
+    Add task
+  </button>
   </div>
 </template>
 
