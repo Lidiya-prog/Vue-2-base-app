@@ -39,7 +39,7 @@
 
         this.taskList = tasks.map((item) => ({
           id: item.id,
-          completed: item.completed,
+          completed: false,
           title: item.title,
         }));
         return this.taskList;

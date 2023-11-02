@@ -2,9 +2,13 @@
   <div :class="task.comleted ? 'todo-item complete' : 'todo-item'">
     <input v-model="title" type="text" />
     <div>
-      <div v-if="!task.completed" @click="$emit('onDone')">
+      <button
+        v-if="!task.completed"
+        class="check-circle"
+        @click="$emit('onDone')"
+      >
         <check-circle-outline />
-      </div>
+      </button>
       <div v-else @click="$emit('onRemove')">
         <close-circle-outline />
       </div>
