@@ -1,24 +1,25 @@
 {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": ["plugin:vue/essential", "eslint:recommended", "@vue/eslint-config-prettier"],
-    "parserOptions": {
-      "parser": "@babel/eslint-parser",
-      "requireConfigFile": false
-    },
-    "rules": {
-      "no-console": "off",
-      "no-debugger": "off",
-      "quotes": [2, "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
-      "prettier/prettier": [
-        "warn",
-        {
-          "singleQuote": true,
-          "semi": true,
-          "vueIndentScriptAndStyle": true
-        }
-      ]
-    }
+  "root": true,
+  "env": {
+    "node": true
+  },
+  "extends": ["plugin:vue/essential", "eslint:recommended", "plugin:vue/recommended",
+  "plugin:prettier/recommended"],
+  "parserOptions": {
+    "parser": "@babel/eslint-parser",
+    "requireConfigFile": false
+  },
+  "rules": {
+    "no-console": "off",
+    "no-debugger": "off",
+    "semi": ["error", "always"],
+    "quotes": ["error", "single"],
+    "vue/max-attributes-per-line": ["error", {
+      "singleline": 1,
+      "multiline": {
+        "max": 1,
+        "allowFirstLine": false
+      }
+    }]
   }
+}
