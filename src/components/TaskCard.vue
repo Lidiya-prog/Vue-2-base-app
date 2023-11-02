@@ -1,13 +1,15 @@
 <template>
-  <div :class="model.comleted ? 'todo-item complete' : 'todo-item'">
+  <div :class="task.comleted ? 'todo-item complete' : 'todo-item'">
+    <input v-model="title" type="text" />
     <div>
-      <h4>{{ model.title }}</h4>
-    </div>
-    <div>
-      <div v-if="!model.completed" @click="emitOnDone">
+      <button
+        v-if="!task.completed"
+        class="check-circle"
+        @click="$emit('onDone')"
+      >
         <check-circle-outline />
-      </div>
-      <div v-else @click="emitOnRemove">
+      </button>
+      <div v-else @click="$emit('onRemove')">
         <close-circle-outline />
       </div>
     </div>
@@ -22,7 +24,7 @@
     components: { CloseCircleOutline, CheckCircleOutline },
     emits: ['onDone', 'onRemove'],
     props: {
-      model: {
+      task: {
         required: true,
         default: {
           id: 0,
@@ -31,24 +33,29 @@
         },
       },
     },
-    setup(props, { emit }) {
-      const emitOnDone = () => {
-        emit('onDone');
-      };
-
-      const emitOnRemove = () => {
-        emit('onRemove');
-      };
-
-      return {
-        emitOnDone,
-        emitOnRemove,
-      };
+    computed: {
+      title: {
+        get() {
+          return this.task.title;
+        },
+        set(newVal) {
+          this.$emit('onEdit', newVal);
+        },
+      },
     },
   };
 </script>
 
 <style scoped>
+  input {
+    background: transparent;
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+  }
   .task-card {
     display: flex;
     justify-content: space-between;

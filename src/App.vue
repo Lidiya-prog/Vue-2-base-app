@@ -1,13 +1,14 @@
 <template>
   <main class="todo-app">
-    <TaskInput @onAddTask="addTask"></TaskInput>
+    <TaskInput @onAddTask="addTask" />
     <span class="loader" v-if="isLoading"></span>
     <ul class="task-list my-list">
       <li v-for="item in taskList" :key="item.id" class="todo-row">
         <TaskCard
           @onRemove="removeTask(item.id)"
           @onDone="setDoneTask(item.id)"
-          :model="item"
+          @onEdit="editTask(item.id)"
+          :task="item"
         />
       </li>
     </ul>
@@ -17,7 +18,6 @@
 <script>
   import TaskInput from './components/TaskInput.vue';
   import TaskCard from './components/TaskCard.vue';
-  import { onMounted, ref } from 'vue';
 
   export default {
     name: 'App',
@@ -25,59 +25,58 @@
       TaskCard,
       TaskInput,
     },
-    setup() {
-      const taskList = ref([]);
-
-      const isLoading = ref(false);
-
-      const addTask = ({ title }) => {
-        taskList.value = [
-          ...taskList.value,
-          {
-            id: taskList.value[taskList.value.length - 1].id + 1,
-            title,
-            completed: false,
-          },
-        ];
+    data() {
+      return {
+        taskList: [],
+        isLoading: false,
       };
+    },
+    methods: {
+      async fetchTasks() {
+        const tasks = await fetch(
+          'https://jsonplaceholder.typicode.com/todos',
+        ).then((res) => res.json());
 
-      const setDoneTask = (id) => {
-        taskList.value = taskList.value.map((item) => {
+        this.taskList = tasks.map((item) => ({
+          id: item.id,
+          completed: false,
+          title: item.title,
+        }));
+        return this.taskList;
+      },
+      addTask({ title }) {
+        const nextId = this.taskList[this.taskList.length - 1].id + 1;
+        this.taskList.push({
+          id: this.taskList.length > 0 ? nextId : 1,
+          title,
+          completed: false,
+        });
+      },
+      setDoneTask(id) {
+        this.taskList = this.taskList.map((item) => {
           if (item.id === id) item.completed = true;
           return item;
         });
-      };
+      },
+      removeTask(id) {
+        this.taskList = this.taskList.filter((item) => item.id !== id);
+      },
+      editTask(id) {
+        const currentIndex = this.taskList.findIndex((task) => task.id === id);
 
-      const removeTask = (id) => {
-        taskList.value = taskList.value.filter((item) => item.id !== id);
-      };
-
-      const fetchTasks = async () => {
-        const response = await fetch(
-          'https://jsonplaceholder.typicode.com/todos',
-        );
-        const test = await response.json();
-        return test.map((item) => ({
-          id: item.id,
-          completed: item.completed,
-          title: item.title,
-        }));
-      };
-
-      onMounted(async () => {
-        isLoading.value = true;
-        taskList.value = await fetchTasks();
-        isLoading.value = false;
-      });
-
-      return {
-        isLoading,
-        taskList,
-        addTask,
-        removeTask,
-        setDoneTask,
-        fetchTasks,
-      };
+        const newTask = {
+          completed: false,
+          id,
+          title: 'new text',
+        };
+        this.taskList[currentIndex] = newTask;
+        // this.$set(this.taskList, currentIndex, newTask);
+      },
+    },
+    async mounted() {
+      this.isLoading = true;
+      await this.fetchTasks();
+      this.isLoading = false;
     },
   };
 </script>
